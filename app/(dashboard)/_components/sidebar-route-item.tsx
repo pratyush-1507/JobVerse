@@ -38,7 +38,7 @@ export const SidebarRouteItem = ({
       <div className="flex items-center gap-x-2 py-4">
         <Icon className= {cn( "text-neutral-500",isActive && "text-purple-700")} size={22} />
         {label}
-      </div>
+      </div> 
       {/* sidebar highlight */}
       <div className={cn("ml-auto opacity-0 border-2 border-purple-700 h-full transition-all",
         isActive && "opacity-100"

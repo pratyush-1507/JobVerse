@@ -36,12 +36,12 @@ const guestRoutes = [
   {
     icon: User,
     label: "Profile",
-    href: "/admin/user",
+    href: "/user",
   },
   {
     icon: Bookmark,
     label: "Bookmarks",
-    href: "/admin/savedJobs",
+    href: "/savedJobs",
   },
 ];
 export const SidebarRoutes = () => {

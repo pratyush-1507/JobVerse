@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { ToastProvider } from "@/providers/toast-providers";
 import { ClerkProvider } from "@clerk/nextjs";
 
 const poppins = Poppins({
@@ -24,7 +25,7 @@ export default function RootLayout({
     <ClerkProvider>
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>{children}
-        <button>Click me!</button>
+       <ToastProvider/>
       </body>
     </html>
     </ClerkProvider>
