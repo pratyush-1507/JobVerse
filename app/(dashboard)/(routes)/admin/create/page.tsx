@@ -37,8 +37,8 @@ const JobCreatePage = () => {
         <div className="">
           <h1 className="text-2xl">Name Your Job</h1>
           <p className="text-sm text-neutral-500">
-            What would you like to name your job? Don&apos;t worry,you can
-            change it later.
+            Enter Job Name.(It can be
+            changed later).
           </p>
         </div>
         {/* form */}

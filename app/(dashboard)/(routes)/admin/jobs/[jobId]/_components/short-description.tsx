@@ -59,19 +59,24 @@ export const ShortDescription = ({
 
 //  GENERATING PROMPT FOR GOOGLE AI FOR SHORT DESCRIPTION
     const handlePromptGeneration = async () => {
-        try{
-            setIsPrompting(true);
-            const customPrompt = `Could you geneate a concise job description for a ${prompt} position? Please keep it short and to the point.`;
-            await getGenerativeAIResponse(customPrompt).then((data) => {
-                form.setValue("short_description", data);
-                setIsPrompting(false);
-            });
-        }catch(error){
-            console.log(error);
-            toast.error("Something went wrong.");
+      try {
+        setIsPrompting(true);
+        const customPrompt = `Could you generate a concise job description for a ${prompt} position? Please keep it very short (under 50 words) and to the point. don't use Of course. Here is a concise job description for role.don't add role name in heading`;
+        const data = await getGenerativeAIResponse(customPrompt);
 
-        }
-    }
+        form.setValue("short_description", data, {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+
+        setIsPrompting(false);
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong.");
+        setIsPrompting(false);
+      }
+    };
+
 
 
   return (

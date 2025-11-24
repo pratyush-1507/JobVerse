@@ -10,11 +10,12 @@ import { JobPublishAction } from "./_components/job-publish-actions";
 import { TitleForm } from "./_components/title-form";
 import { CategoryForm } from "./_components/category-form";
 import { ShortDescription } from "./_components/short-description";
-import { ShiftTimingForm } from "./_components/shift-timing-mode";
-import { Salary } from "./_components/salary-form";
+import { ShiftTimingForm } from "./_components/shift-timing-mode"
 import { WorkModeForm } from "./_components/work-mode-form";
 import { ExperienceForm } from "./_components/work-experience-form";
 import { JobDescription } from "./_components/job-description";
+import { TagsForm } from "./_components/tags-form";
+import { CompanyForm } from "./_components/company-form";
 const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
     
     //verify if jobId is valid with mongoDB
@@ -28,7 +29,7 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
     }
     const job = await db.job.findUnique({
         where: {
-            id: params.jobId,
+            id: await params.jobId,
             userId: userId,
         },
     });
@@ -37,6 +38,16 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
         orderBy: {
             name: "asc",
         },
+    });
+
+    const companies = await db.company.findMany({
+      
+      where:{
+        userId
+      },
+      orderBy:{
+        createdAt: "desc"
+      }
     });
 
     if(!job) {
@@ -112,6 +123,17 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
             <ShiftTimingForm initialData={job} jobId={job.id} />
             <WorkModeForm initialData={job} jobId={job.id} />
             <ExperienceForm initialData={job} jobId={job.id} />
+            <TagsForm initialData={job} jobId={job.id} />
+            
+            {/* company name form */}
+            <CompanyForm
+              initialData={job}
+              jobId={job.id}
+              options={companies.map((company) => ({
+                label: company.name,
+                value: company.id,
+              }))}
+            />
           </div>
           {/* right part */}
           <div>

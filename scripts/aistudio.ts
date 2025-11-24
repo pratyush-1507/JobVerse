@@ -5,10 +5,10 @@ const {
 } = require("@google/generative-ai");
 
 // const apiKey = process.env.GEMINI_API_KEY;
-const genAI = new GoogleGenerativeAI("AIzaSyDzcojALrbIKo0zvKIe_67_g3PrQ-E2hUw"); //api key
+const genAI = new GoogleGenerativeAI("AIzaSyAUibiHLxWuBCE6HAXcn6O_aypINcO56Iw"); //api key
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
+  model: "gemini-2.5-pro",
 });
 
 const generationConfig = {
@@ -16,7 +16,7 @@ const generationConfig = {
   topP: 0.95,
   topK: 64,
   maxOutputTokens: 8192,
-  responseMimeType: "text/plain",
+  responseMimeType: process.env.GEMINI_MODE === "json" ? "application/json" : "text/plain",
 };
 
 async function getGenerativeAIResponse(prompt: string) {

@@ -4,14 +4,21 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
+import { SearchContainer } from "@/components/search-container";
 
 export const NavbarRoutes = () => {
   const pathname = usePathname()
   const isAdminPage = pathname?.startsWith("/admin")
   const isPlayerPage = pathname?.startsWith("/jobs")
+  const isSeachPage = pathname?.startsWith("/search")
 
   return (
     <>
+      {isSeachPage && (
+        <div className="hidden md:flex w-full px-2 pr-8 items-center gap-x-6">
+          <SearchContainer/>
+        </div>
+      )}
       <div className="flex items-center gap-x-2 ml-auto">
         {isAdminPage || isPlayerPage ? (
           <Link href={"/"}>

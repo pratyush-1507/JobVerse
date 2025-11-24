@@ -17,18 +17,18 @@ import {
 import { Lightbulb, Loader2, Pencil, Copy } from "lucide-react";
 import { TiptapEditor } from "@/components/ui/editor";
 import getGenerativeAIResponse from "@/scripts/aistudio";
-import { Job } from "@prisma/client";
+import { Company } from "@prisma/client";
 
-interface JobDescriptionProps {
-  initialData: Job;
-  jobId: string;
+interface CompanyOverviewFormProps {
+  initialData: Company;
+  companyId: string;
 }
 
 const formSchema = z.object({
-  description: z.string().min(1),
+  overview: z.string().min(1),
 });
 
-export const JobDescription = ({ initialData, jobId }: JobDescriptionProps) => {
+export const CompanyOverviewForm = ({ initialData, companyId }: CompanyOverviewFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [rolename, setRolename] = useState("");
   const [skills, setSkills] = useState("");
@@ -40,7 +40,7 @@ export const JobDescription = ({ initialData, jobId }: JobDescriptionProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData.description || "",
+      overview: initialData?.overview || "",
     },
   });
 
@@ -51,7 +51,8 @@ export const JobDescription = ({ initialData, jobId }: JobDescriptionProps) => {
   const handlePromptGeneration = async () => {
     try {
       setIsPrompting(true);
-      const prompt = `Write a detailed job description for the role of ${rolename} under 550 words. make sure to include the following skills: ${skills}. The description should be formatted in HTML with appropriate tags for headings, paragraphs, lists, etc. Also mention necassary qualifications, job salary, work hours, work mode and location and other details that are relevant to the job.
+      const prompt = `Generate a detailed and engaging company overview for ${rolename} to be put on  job portal (under 1000 words) based on the following details,
+      also generate some content for "Why Join Us" section discussing about perks in company, the work culture in company and the opportunities for growth, what employee can expect from the company. Try to make it company specific by looking at the company details.
 Use valid HTML with the following rules:
 
 - DO NOT include "html" or markdown formatting.
@@ -75,7 +76,7 @@ Use valid HTML with the following rules:
       setAiValue(cleaned);
 
       // Set it to form editor as well
-      form.setValue("description", cleaned, {
+      form.setValue("overview", cleaned, {
         shouldValidate: true,
         shouldDirty: true,
       });
@@ -95,8 +96,8 @@ Use valid HTML with the following rules:
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/jobs/${jobId}`, values);
-      toast.success("Description updated successfully!");
+      await axios.patch(`/api/companies/${companyId}`, values);
+      toast.success("Updated successfully!");
       toggleEditing();
       router.refresh();
     } catch (error) {
@@ -107,7 +108,7 @@ Use valid HTML with the following rules:
   return (
     <div className="mt-6 border bg-neutral-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Job Description
+       Company Overview
         <Button onClick={toggleEditing} variant="ghost">
           {isEditing ? (
             "Cancel"
@@ -123,7 +124,7 @@ Use valid HTML with the following rules:
       {!isEditing && (
         <div
           className="text-neutral-500 prose mt-2"
-          dangerouslySetInnerHTML={{ __html: initialData?.description || "" }}
+          dangerouslySetInnerHTML={{ __html: initialData?.overview || "" }}
         />
       )}
 
@@ -131,18 +132,11 @@ Use valid HTML with the following rules:
         <>
           {/* Prompt Inputs */}
           <div className="flex items-center gap-2 my-3">
-            <input
+            <input 
               type="text"
-              placeholder="e.g. Software Developer"
+              placeholder="Enter Company Name for AI to generate overview else type manually"
               value={rolename}
               onChange={(e) => setRolename(e.target.value)}
-              className="w-full p-2 rounded-md"
-            />
-            <input
-              type="text"
-              placeholder="Required skills (comma separated)"
-              value={skills}
-              onChange={(e) => setSkills(e.target.value)}
               className="w-full p-2 rounded-md"
             />
             <Button onClick={handlePromptGeneration} disabled={isPrompting}>
@@ -153,10 +147,6 @@ Use valid HTML with the following rules:
               )}
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground text-right">
-            The job name and skills will be used to generate formatted
-            description.
-          </p>
 
           {/* AI Preview
           {aiValue && (
@@ -181,7 +171,7 @@ Use valid HTML with the following rules:
             >
               <FormField
                 control={form.control}
-                name="description"
+                name="overview"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>

@@ -124,4 +124,22 @@ body,
   body {
     @apply bg-background text-foreground;
   }
+
+  /* 👇 Custom raw HTML formatting */
+  .formatted-description p {
+    @apply my-2 leading-relaxed;
+  }
+
+  .formatted-description ul {
+    @apply list-disc ml-5 my-2;
+  }
+
+  .formatted-description li {
+    @apply mb-1;
+  }
+
+  .formatted-description strong {
+    @apply font-semibold;
+  }
 }
+
